@@ -130,3 +130,14 @@ class QuestionIndexDetailTests(TestCase):
                                    args=(past_question.id,)))
         self.assertContains(response, past_question.question_text,
                             status_code=200)
+
+    def test_detail_view_with_question_of_no_choice(self):
+        """
+        The detail view of a question with no choices should
+        not display the Vote button.
+        """
+        past_question = create_question(question_text='No Choice Question.',
+                                        days=-5)
+        response = self.client.get(reverse('polls:detail',
+                                   args=(past_question.id,)))
+        self.assertNotContains(response, "Vote", status_code=200)

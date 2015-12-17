@@ -1,21 +1,25 @@
-<h1>{{ question.question_text }}</h1>
+{% extends "frontend/layout.html" %}
 
-{% if question.choice_set.count > 0 %}
+{% block content %}
+    <h1>{{ question.question_text }}</h1>
 
-    {% if error_message %}<p><strong>{{ error_message }}</strong></p>{% endif %}
+    {% if question.choice_set.count > 0 %}
 
-    <form action="{% url 'polls:vote' question.id %}" method="post">
-        {% csrf_token %}
-        {% for choice in question.choice_set.all %}
-            <label for="choice{{ forloop.counter }}">
-            <input type="radio" name="choice" id="choice{{ forloop.counter }}" value="{{ choice.id }}" /> {{ choice.choice_text }}
-            </label><br />
-        {% endfor %}
-        <input type="submit" value="Vote" />
-    </form>
+        {% if error_message %}<p><strong>{{ error_message }}</strong></p>{% endif %}
 
-{% else %}
+        <form action="{% url 'polls:vote' question.id %}" method="post">
+            {% csrf_token %}
+            {% for choice in question.choice_set.all %}
+                <label for="choice{{ forloop.counter }}">
+                <input type="radio" name="choice" id="choice{{ forloop.counter }}" value="{{ choice.id }}" /> {{ choice.choice_text }}
+                </label><br />
+            {% endfor %}
+            <input type="submit" value="Vote" />
+        </form>
 
-    <p>No Choices Found</p>
+    {% else %}
 
-{% endif %}
+        <p>No Choices Found</p>
+
+    {% endif %}
+{% endblock %}
